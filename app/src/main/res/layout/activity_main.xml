@@ -136,7 +136,7 @@
             android:layout_marginBottom="10dp"
             android:text="Previsão do tempo de hoje"
             android:textColor="@color/white"
-            android:layout_above="@id/idRvWeather"
+            android:layout_above="@id/idRVWeather"
             android:textStyle="bold"
             />
 
