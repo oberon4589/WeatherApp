@@ -13,6 +13,7 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private WeatherRVAdapter weatherRVAdapter;
     private LocationManager locationManager;
     private int PERMISSION_CODE = 1;
+    private String cityName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +69,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
         Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        cityName = getCityName(location.getLongitude(), location.getLatitude());
+
+        getWeatherInfo(cityName);
+
+        searchIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String city = cityEdt.getText().toString();
+                if(city.isEmpty()){
+                    Toast.makeText(MainActivity.this, "Por favor, insira uma cidade", Toast.LENGTH_SHORT).show();
+                }else{
+                    cityNameTV.setText(cityName);
+                    getWeatherInfo(city);
+                }
+            }
+        });
 
     }
 
