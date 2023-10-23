@@ -1,5 +1,6 @@
 package com.codename.weatherapp;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.RecyclerView;
@@ -86,6 +87,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (requestCode==PERMISSION_CODE){
+            if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                Toast.makeText(this, "Permissão concedida", Toast.LENGTH_SHORT).show();
+            }else{
+                Toast.makeText(this, "Permissão negada", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        }
     }
 
     private String getCityName(double longitude, double latitude){
