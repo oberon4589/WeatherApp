@@ -170,12 +170,12 @@ public class MainActivity extends AppCompatActivity {
                     for (int i=0; i<hourArray.length(); i++) {
                         JSONObject hourObj = hourArray.getJSONObject(i);
                         String time = hourObj.getString("time");
-                        String temp = hourObj.getString("temp_c");
+                        String temper = hourObj.getString("temp_c");
+                        String img = hourObj.getJSONObject("condition").getString("icon");
                         String wind = hourObj.getString("wind_kph");
-                        String icon = hourObj.getJSONObject("condition").getString("icon");
-                        WeatherRVModal modal = new WeatherRVModal(time, temp, icon, wind);
-                        weatherRVModalArrayList.add(modal);
+                        weatherRVModalArrayList.add(new WeatherRVModal(time, temper, img, wind));
                     }
+                    weatherRVAdapter.notifyDataSetChanged();
 
 
                 } catch (JSONException e) {
