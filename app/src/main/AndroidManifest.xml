@@ -16,6 +16,7 @@
         android:roundIcon="@drawable/weather"
         android:supportsRtl="true"
         android:theme="@style/Theme.WeatherApp"
+        android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
             android:name=".MainActivity"

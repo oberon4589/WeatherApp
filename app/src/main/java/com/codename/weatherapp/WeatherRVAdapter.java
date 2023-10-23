@@ -1,5 +1,6 @@
 package com.codename.weatherapp;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +19,8 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class WeatherRVAdapter extends RecyclerView.Adapter<WeatherRVAdapter.ViewHolder> {
-    private Context context;
-    private ArrayList<WeatherRVModal> weatherRVModalArrayList;
+    private final Context context;
+    private final ArrayList<WeatherRVModal> weatherRVModalArrayList;
 
     public WeatherRVAdapter(Context context, ArrayList<WeatherRVModal> weatherRVModalArrayList) {
         this.context = context;
@@ -33,6 +34,7 @@ public class WeatherRVAdapter extends RecyclerView.Adapter<WeatherRVAdapter.View
         return new ViewHolder(view);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull WeatherRVAdapter.ViewHolder holder, int position) {
 
@@ -40,10 +42,11 @@ public class WeatherRVAdapter extends RecyclerView.Adapter<WeatherRVAdapter.View
         holder.temperatureTV.setText(modal.getTemperature()+"ºC");
         Picasso.get().load("http://".concat(modal.getIcon())).into(holder.conditionIV);
         holder.windTV.setText(modal.getWindSpeed()+"Km/h");
-        SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-        SimpleDateFormat output = new SimpleDateFormat("hh:mm aa");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat input = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat output = new SimpleDateFormat("hh:mm aa");
         try {
             Date t = input.parse(modal.getTime());
+            assert t != null;
             holder.timeTV.setText(output.format(t));
         } catch (ParseException e) {
             e.printStackTrace();
@@ -56,9 +59,11 @@ public class WeatherRVAdapter extends RecyclerView.Adapter<WeatherRVAdapter.View
         return weatherRVModalArrayList.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView windTV, temperatureTV, timeTV;
-        private ImageView conditionIV;
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        private final TextView windTV;
+        private final TextView temperatureTV;
+        private final TextView timeTV;
+        private final ImageView conditionIV;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
