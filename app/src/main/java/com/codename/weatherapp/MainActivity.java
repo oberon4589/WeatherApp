@@ -22,7 +22,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.android.material.textfield.TextInputEditText;
+import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -78,9 +88,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String city = cityEdt.getText().toString();
-                if(city.isEmpty()){
+                if (city.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Por favor, insira uma cidade", Toast.LENGTH_SHORT).show();
-                }else{
+                } else {
                     cityNameTV.setText(cityName);
                     getWeatherInfo(city);
                 }
@@ -92,28 +102,28 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (requestCode==PERMISSION_CODE){
-            if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+        if (requestCode == PERMISSION_CODE) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Toast.makeText(this, "Permissão concedida", Toast.LENGTH_SHORT).show();
-            }else{
+            } else {
                 Toast.makeText(this, "Permissão negada", Toast.LENGTH_SHORT).show();
                 finish();
             }
         }
     }
 
-    private String getCityName(double longitude, double latitude){
+    private String getCityName(double longitude, double latitude) {
         String cityName = "Cidade não encontrada";
         Geocoder gcd = new Geocoder(getBaseContext(), Locale.getDefault());
         try {
             List<Address> addresses = gcd.getFromLocation(latitude, longitude, 10);
 
-            for(Address adr : addresses){
-                if(adr != null){
+            for (Address adr : addresses) {
+                if (adr != null) {
                     String city = adr.getLocality();
-                    if(city != null && !city.equals("")){
+                    if (city != null && !city.equals("")) {
                         cityName = city;
-                    }else{
+                    } else {
                         Log.d("TAG", "CIDADE NÃO ENCONTRADA");
                         Toast.makeText(this, "Cidade do usuário não encontrada", Toast.LENGTH_SHORT).show();
 
@@ -128,6 +138,46 @@ public class MainActivity extends AppCompatActivity {
 
     private void getWeatherInfo(String cityName) {
         String url = "http://api.weatherapi.com/v1/forecast.json?key=480f0367065542c2885173030230410&q=" + cityName + "&days=1&aqi=yes&alerts=yes\n";
+        cityNameTV.setText(cityName);
+        RequestQueue requestQueue = Volley.newRequestQueue(MainActivity.this);
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                loadingPB.setVisibility(View.GONE);
+                homeRL.setVisibility(View.VISIBLE);
+                weatherRVModalArrayList.clear();
+
+                try {
+                    String temperature = response.getJSONObject("current").getString("temp_c");
+                    temperatureTV.setText(temperature + "ºC");
+                    int isDay = response.getJSONObject("current").getInt("is_day");
+                    String condition = response.getJSONObject("current").getJSONObject("condition").getString("text");
+                    String conditionIcon = response.getJSONObject("current").getJSONObject("condition").getString("icon");
+                    Picasso.get().load("http:".concat(conditionIcon)).into(iconIV);
+                    conditionTV.setText(condition);
+                    if (isDay == 1) {
+                        Picasso.get().load("https://images.unsplash.com/photo-1590867286251-8e26d9f255c0?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D".concat(conditionIcon)).into(backIV);
+                    } else {
+                        Picasso.get().load("https://images.unsplash.com/photo-1505506874110-6a7a69069a08?auto=format&fit=crop&q=80&w=1974&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D".concat(conditionIcon)).into(backIV);
+                    }
+
+
+
+
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Toast.makeText(MainActivity.this, "Digite uma cidade válida", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        requestQueue.add(jsonObjectRequest);
 
 
     }
