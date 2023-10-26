@@ -70,6 +70,12 @@ public class FormLogin extends AppCompatActivity {
                             telaPrincipal();
                         }
                     }, 1500);
+                } else {
+                    try {
+                        throw task.getException();
+                    } catch (Exception e) {
+                        Toast.makeText(FormLogin.this, "Erro ao efetuar login", Toast.LENGTH_SHORT).show();
+                    }
                 }
             }
         });
