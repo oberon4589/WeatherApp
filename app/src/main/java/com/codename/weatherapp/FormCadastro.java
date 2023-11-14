@@ -112,8 +112,8 @@ public class FormCadastro extends AppCompatActivity {
     }
 
     private void iniciarComponentes() {
-        edit_nome = findViewById(R.id.edit_nome);
-        edit_email = findViewById(R.id.edit_email);
+        edit_nome = findViewById(R.id.editNome);
+        edit_email = findViewById(R.id.editEmail);
         edit_senha = findViewById(R.id.editSenha);
         bt_cadastrar = findViewById(R.id.bt_cadastrar);
     }

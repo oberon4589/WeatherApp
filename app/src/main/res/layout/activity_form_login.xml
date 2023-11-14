@@ -24,27 +24,35 @@
         app:layout_constraintTop_toBottomOf="@id/logo" />
 
 
-    <EditText
-        android:id="@+id/editEmail"
-        style="@style/EditText"
-        android:drawableRight="@drawable/ic_email"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/layout_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:hint="Email"
-        android:inputType="textEmailAddress"
-        android:textColor="@color/black"
-        android:textColorHint="@color/black"
         app:layout_constraintEnd_toEndOf="@id/containerComponents"
         app:layout_constraintStart_toStartOf="@id/containerComponents"
-        app:layout_constraintTop_toTopOf="@id/containerComponents" />
+        app:layout_constraintTop_toTopOf="@id/containerComponents">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/editEmail"
+            style="@style/EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/black"
+            android:textColorHint="@color/black" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_senha"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/hintSenha"
+        android:hint="Senha"
         app:endIconMode="password_toggle"
         app:layout_constraintEnd_toEndOf="@id/containerComponents"
         app:layout_constraintStart_toStartOf="@id/containerComponents"
-        app:layout_constraintTop_toBottomOf="@id/editEmail">
+        app:layout_constraintTop_toBottomOf="@id/layout_email">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editSenha"

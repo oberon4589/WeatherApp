@@ -36,7 +36,8 @@
         android:hint="Nome"
         app:layout_constraintEnd_toEndOf="@id/containerComponents"
         app:layout_constraintStart_toStartOf="@id/containerComponents"
-        app:layout_constraintTop_toTopOf="@id/containerComponents">
+        app:layout_constraintTop_toTopOf="@id/containerComponents"
+        android:layout_marginTop="20dp">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/editNome"
@@ -52,7 +53,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_email"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Email"
         app:layout_constraintEnd_toEndOf="@id/containerComponents"
@@ -72,7 +73,7 @@
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/layout_senha"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Senha"
         app:endIconMode="password_toggle"
