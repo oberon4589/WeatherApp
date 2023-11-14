@@ -3,6 +3,7 @@
     <string name="entrar">Entrar</string>
     <string name="text_cadastro">Crie uma conta clicando aqui!</string>
     <string name="title_cadastro">Cadastre-se</string>
+    <string name="hintSenha">Senha</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
