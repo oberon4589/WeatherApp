@@ -2,13 +2,18 @@ package com.codename.weatherapp;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Message;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
@@ -104,6 +109,37 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        showNotificattion("WeatherApp", "Hoje o clima está bom!");
+
+    }
+
+    private void showNotificattion(String title, String message) {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        String NOTIFICATION_CHANNEL_ID = "com.codename.weatherapp.test";
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            @SuppressLint("WrongConstant") NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "Notificação", NotificationManager.IMPORTANCE_MAX);
+
+            notificationChannel.setDescription("WeatherApp");
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(R.color.black);
+            notificationChannel.setVibrationPattern(new long[]{0, 1000, 500, 1000});
+            notificationChannel.enableLights(true);
+            notificationManager.createNotificationChannel(notificationChannel);
+
+        }
+
+        Notification.Builder builder = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            builder = new Notification.Builder(this, NOTIFICATION_CHANNEL_ID)
+                    .setSmallIcon(R.drawable.ic_launcher_foreground)
+                    .setContentTitle(title)
+                    .setContentText(message)
+                    .setAutoCancel(true)
+                    .setPriority(Notification.PRIORITY_MAX);
+        }
+
+        notificationManager.notify(0, builder.build());
     }
 
     @Override
@@ -172,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject forecastO = forecastObj.getJSONArray("forecastday").getJSONObject(0);
                 JSONArray hourArray = forecastO.getJSONArray("hour");
 
-                for (int i=0; i<hourArray.length(); i++) {
+                for (int i = 0; i < hourArray.length(); i++) {
                     JSONObject hourObj = hourArray.getJSONObject(i);
                     String time = hourObj.getString("time");
                     String temper = hourObj.getString("temp_c");
