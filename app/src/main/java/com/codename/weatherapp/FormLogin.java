@@ -2,8 +2,12 @@ package com.codename.weatherapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
+import androidx.biometric.BiometricManager;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
@@ -18,18 +22,41 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.concurrent.Executor;
+
 public class FormLogin extends AppCompatActivity {
 
     private TextView textCadastrar;
     private EditText editEmail, editSenha;
-    private Button btEntrar;
+    private Button btEntrar, btnLoginBiometric;
     private ProgressBar progressBar;
+    private Executor executor;
+    private BiometricPrompt biometricPrompt;
+    private BiometricPrompt.PromptInfo promptInfo;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_form_login);
         IniciarComponentes();
+
+        executor = ContextCompat.getMainExecutor(this);
+        biometricPrompt = new BiometricPrompt(this, executor, new BiometricPrompt.AuthenticationCallback() {
+
+            @Override
+            public void onAuthenticationSucceeded(BiometricPrompt.AuthenticationResult result) {
+                super.onAuthenticationSucceeded(result);
+                autenticarUsuarioBiometrico();
+                progressBar.setVisibility(View.GONE);
+            }
+        });
+
+        promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Login")
+                .setDescription("Use sua biometria para entrar")
+                .setNegativeButtonText("Cancelar")
+                .build();
 
         textCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -52,6 +79,25 @@ public class FormLogin extends AppCompatActivity {
                 }
             }
         });
+
+        btnLoginBiometric.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                BiometricManager biometricManager = BiometricManager.from(FormLogin.this);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    if (biometricManager.canAuthenticate() == BiometricManager.BIOMETRIC_SUCCESS) {
+                        biometricPrompt.authenticate(promptInfo);
+                    } else {
+                        Toast.makeText(FormLogin.this, "Não foi possível usar a biometria", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+        });
+
+    }
+
+    public void autenticarUsuarioBiometrico() {
+        telaPrincipal();
     }
 
     private void autenticarUsuario() {
@@ -93,5 +139,6 @@ public class FormLogin extends AppCompatActivity {
         editSenha = findViewById(R.id.editSenha);
         btEntrar = findViewById(R.id.btEntrar);
         progressBar = findViewById(R.id.progressBar);
+        btnLoginBiometric = findViewById(R.id.btnLoginBiometric);
     }
 }

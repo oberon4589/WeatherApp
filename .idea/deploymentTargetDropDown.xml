@@ -6,23 +6,12 @@
         <type value="RUNNING_DEVICE_TARGET" />
         <deviceKey>
           <Key>
-            <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\SKINKA\.android\avd\Pixel_7_Pro.avd" />
+            <type value="SERIAL_NUMBER" />
+            <value value="RXCR3004K6T" />
           </Key>
         </deviceKey>
       </Target>
     </runningDeviceTargetSelectedWithDropDown>
-    <targetSelectedWithDropDown>
-      <Target>
-        <type value="QUICK_BOOT_TARGET" />
-        <deviceKey>
-          <Key>
-            <type value="VIRTUAL_DEVICE_PATH" />
-            <value value="C:\Users\SKINKA\.android\avd\Pixel_7_Pro.avd" />
-          </Key>
-        </deviceKey>
-      </Target>
-    </targetSelectedWithDropDown>
-    <timeTargetWasSelectedWithDropDown value="2023-11-17T17:39:47.045002200Z" />
+    <timeTargetWasSelectedWithDropDown value="2023-11-17T18:51:05.309571400Z" />
   </component>
 </project>

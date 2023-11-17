@@ -74,6 +74,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/layout_senha" />
 
+    <!-- Adicione o botão para autenticação biométrica -->
+    <Button
+        android:id="@+id/btnLoginBiometric"
+        style="@style/Button"
+        android:text="Login com Biometria"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textCadastrar"
+        android:layout_marginTop="20dp"/>
+
+
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
