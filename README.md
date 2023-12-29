@@ -10,7 +10,7 @@
 <h4 align="center">Aplicativo de previsão de tempo em java</h4>
 
 <p align="center">
-    <img src="https://img.shields.io/badge/status-Em%20Desenvolvimento-yellow"
+    <img src="https://img.shields.io/badge/status-Concluído-green"
          alt="Em desenvolvimento">
   </a>
 
